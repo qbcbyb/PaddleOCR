@@ -90,6 +90,7 @@ class TextSystem(object):
         if dt_boxes is None:
             return None, None
         img_crop_list = []
+        angle_list = []
 
         dt_boxes = sorted_boxes(dt_boxes)
 
@@ -105,7 +106,7 @@ class TextSystem(object):
         rec_res, elapse = self.text_recognizer(img_crop_list)
         print("rec_res num  : {}, elapse : {}".format(len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
-        return dt_boxes, rec_res
+        return dt_boxes, rec_res, angle_list
 
 
 def sorted_boxes(dt_boxes):

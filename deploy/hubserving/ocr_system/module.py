@@ -96,19 +96,23 @@ class OCRSystem(hub.Module):
                 all_results.append([])
                 continue
             starttime = time.time()
-            dt_boxes, rec_res = self.text_sys(img)
+            dt_boxes, rec_res, angle_list = self.text_sys(img)
             elapse = time.time() - starttime
             logger.info("Predict time: {}".format(elapse))
 
             dt_num = len(dt_boxes)
             rec_res_final = []
+            has_angle = len(angle_list) > 0
 
             for dno in range(dt_num):
                 text, score = rec_res[dno]
+                angle = [angle_list[dno][0], angle_list[dno][1].item()] if has_angle else ['',0.0]
                 rec_res_final.append({
                     'text': text,
                     'confidence': float(score),
-                    'text_region': dt_boxes[dno].astype(np.int).tolist()
+                    'text_region': dt_boxes[dno].astype(np.int).tolist(),
+                    'angle': angle
+
                 })
             all_results.append(rec_res_final)
         return all_results
